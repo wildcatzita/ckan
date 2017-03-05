@@ -28,6 +28,7 @@ from ckan.logic.validators import (
     package_name_validator,
     package_version_validator,
     group_name_validator,
+    group_id_or_name_exists_validator,
     tag_length_validator,
     tag_name_validator,
     tag_string_convert,
@@ -275,7 +276,7 @@ def default_show_package_schema():
 
 def default_group_schema():
     schema = {
-        'id': [ignore_missing, unicode],
+        'id': [ignore_missing, unicode, group_id_or_name_exists_validator],
         'revision_id': [ignore],
         'name': [not_empty, unicode, name_validator, group_name_validator],
         'title': [ignore_missing, unicode],
@@ -328,7 +329,7 @@ def group_form_schema():
 
 def default_update_group_schema():
     schema = default_group_schema()
-    schema["name"] = [ignore_missing, group_name_validator, unicode]
+    schema["name"] = [ignore_missing, group_name_validator, unicode, group_id_or_name_exists_validator]
     return schema
 
 

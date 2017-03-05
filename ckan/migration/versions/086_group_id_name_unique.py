@@ -10,6 +10,8 @@ from migrate.changeset.constraint import UniqueConstraint
 
 def upgrade(migrate_engine):
     # ignore reflection warnings
+    print 'Hello from def upgrade'
+    import pdb;pdb.set_trace();
     with warnings.catch_warnings():
         warnings.simplefilter("ignore", category=sa_exc.SAWarning)
         metadata = MetaData()

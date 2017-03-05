@@ -409,6 +409,23 @@ def group_name_validator(key, data, errors, context):
     if result:
         errors[key].append(_('Group name already exists in database'))
 
+def group_id_or_name_exists_validator(key, data, errors, context):
+    model = context['model']
+    session = context['session']
+    group = context.get('group')
+
+    query = session.query(model.Group.name).filter_by(name=data[key])
+    print 'key[:-1] = {0}, key[:-1] + (id,) = {1}, key = {2}'.format(key[:-1], key[:-1] + (id,), key)
+    if group:
+        group_id = group.id
+    else:
+        group_id = data.get(key[:-1] + ('id',))
+    if group_id and group_id is not missing:
+        query = query.filter(model.Group.id <> group_id)
+    result = query.first()
+    if result:
+        errors[key].append(_('Group id already exists in database'))
+
 def tag_length_validator(value, context):
 
     if len(value) < MIN_TAG_LENGTH:
